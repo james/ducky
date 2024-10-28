@@ -5,7 +5,7 @@ require 'tty-prompt'
 require 'ruby/openai'
 
 # Configuration for OpenAI client
-def gpt_completion(messages, model, client, temp = 0.5, top_p = 1.0, tokens = 400, freq_pen = 0.0, pres_pen = 0.0, stop = ['USER:', 'KITTY:'])
+def gpt_completion(messages, model, client, temp = 0.5, top_p = 1.0, tokens = 400, freq_pen = 0.0, pres_pen = 0.0, stop = ['USER:', 'DUCKY:'])
   response = client.chat(
     parameters: {
       model: model,
@@ -34,7 +34,7 @@ def main
   # Add meta prompt
   messages << {
     role: 'system',
-    content: "You are a chatbot named KITTY. Your job is to help James Darling do daily journaling. You're going to be keeping track of the questions asked and the answers given. You are generally helpful and friendly."
+    content: "You are a chatbot named DUCKY. Your job is to help James Darling do daily journaling. You're going to be keeping track of the questions asked and the answers given. You are generally helpful and friendly."
   }
 
   # Add current date/time context
@@ -49,7 +49,7 @@ def main
 
   messages << {
     role: 'system',
-    content: 'Important: Your name is Kitty, you are not a cat, you are an AI PA, do NOT pretend to be a cat, act like a human, you are just called Kitty.'
+    content: 'Important: Your name is Ducky, you are not a duck, you are an AI PA, do NOT pretend to be a duck, act like a human, you are just called Ducky.'
   }
 
   messages << {
