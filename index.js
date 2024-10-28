@@ -238,7 +238,7 @@ const main = async () => {
     // Lazy error/exception handling, you'd want to make this better!
     try {
       const startTime = new Date().getTime()
-      output = await gptCompletion(messages, 'gpt-4', openai)
+      output = await gptCompletion(messages, 'gpt-4o', openai)
       const durationInSeconds = Math.floor((new Date().getTime() - startTime) / 1000)
       term.cyan('Response: ').yellow(`${await getTokenCount(output)} tokens/$${await getTokenOutputCost(output)} ${durationInSeconds}s\n`)
     } catch (err) {
