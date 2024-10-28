@@ -34,7 +34,9 @@ def main
   # Add meta prompt
   messages << {
     role: 'system',
-    content: "You are a chatbot named DUCKY. Your job is to help James Darling do daily journaling. You're going to be keeping track of the questions asked and the answers given. You are generally helpful and friendly."
+    content: "You are a chatbot named DUCKY. Your job is to help James Darling do daily journaling. " \
+      "You're going to be keeping track of the questions asked and the answers given. " \
+      "You are generally helpful and friendly."
   }
 
   # Add current date/time context
@@ -44,12 +46,19 @@ def main
 
   messages << {
     role: 'system',
-    content: "VERY IMPORTANT: Today is #{day_name} and the date is #{current_date.strftime('%d/%m/%Y')}, the time is #{current_time.strftime('%H:%M:%S')}. Important: Saturday and Sunday are the weekend for relaxing not working, if the day is Saturday or Sunday make your questions less work related and more time-off chilling related. #{data_json['name']} counts the start of the week and work week as Monday, anything 'new week' related starts on Monday. The end of 'work week' related ends on Friday. IMPORTANT, please don't be asking about the weekend on any other day than Monday or Friday, please pay attention to the current day of the week."
+    content: "VERY IMPORTANT: Today is #{day_name} and the date is #{current_date.strftime('%d/%m/%Y')}, " \
+    "the time is #{current_time.strftime('%H:%M:%S')}. Important: Saturday and Sunday are the weekend for " \
+    "relaxing not working, if the day is Saturday or Sunday make your questions less work related and more " \
+    "time-off chilling related. #{data_json['name']} counts the start of the week and work week as Monday, " \
+    "anything 'new week' related starts on Monday. The end of 'work week' related ends on Friday. " \
+    "IMPORTANT, please don't be asking about the weekend on any other day than Monday or Friday, please pay " \
+    "attention to the current day of the week."
   }
 
   messages << {
     role: 'system',
-    content: 'Important: Your name is Ducky, you are not a duck, you are an AI PA, do NOT pretend to be a duck, act like a human, you are just called Ducky.'
+    content: 'Important: Your name is Ducky, you are not a duck, you are an AI PA, do NOT pretend to be a duck, " \
+      "act like a human, you are just called Ducky.'
   }
 
   messages << {
@@ -110,7 +119,18 @@ def main
   # Request new questions from GPT
   messages << {
     role: 'user',
-    content: 'Please create a set of three questions to ask in the MORNING by combining relevant questions from the initial list and formulating new ones. When appropriate, incorporate overarching themes from previous responses into the questions, but, very important, don\'t be overly direct with follow-up inquiries and don\'t always reference them, you can go back to the original list of questions for guidance, please mix it up, one question should always be new and unreliated to previous answers. Remember the information about weekends! Put more weight on recent questions and answers rather than older ones, questions and answers from a few days ago are less relevant than the past couple of days (unless the last couple of days we the weekend). Put more focus on the answers given than the questions you previously asked (they are just there for context). Remember you are asking these at the start of the day. There must be three questions, no more or less. Please return those three questions in .txt format with one question per line. Important: there must be NO numbers at the start of each question! Only return the questions no other text.'
+    content: "Please create a set of three questions to ask in the MORNING by combining relevant questions " \
+    "from the initial list and formulating new ones. When appropriate, incorporate overarching themes from " \
+    "previous responses into the questions, but, very important, don\'t be overly direct with follow-up " \
+    "inquiries and don\'t always reference them, you can go back to the original list of questions for guidance, " \
+    "please mix it up, one question should always be new and unreliated to previous answers. " \
+    "Remember the information about weekends! Put more weight on recent questions and answers rather than " \
+    "older ones, questions and answers from a few days ago are less relevant than the past couple of days " \
+    "(unless the last couple of days we the weekend). Put more focus on the answers given than the questions " \
+    "you previously asked (they are just there for context). " \
+    "Remember you are asking these at the start of the day. There must be three questions, no more or less. " \
+    "Please return those three questions in .txt format with one question per line. " \
+    "Important: there must be NO numbers at the start of each question! Only return the questions no other text."
   }
 
   # Print messages
