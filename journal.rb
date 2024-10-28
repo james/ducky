@@ -15,24 +15,6 @@ def gpt_completion(messages, model, client, temp = 0.5, top_p = 1.0, tokens = 40
   response.dig('choices', 0, 'message', 'content').to_s.strip.gsub(/[\r\n]+/, "\n").gsub(/[\t ]+/, ' ')
 end
 
-# Simplified token counting function
-# Note: This is a rough approximation as we don't have direct GPT-3 tokenizer
-def get_token_count(messages)
-  JSON.generate(messages).length / 4  # Rough approximation
-end
-
-# Calculate input token cost
-def get_token_input_cost(messages)
-  token_cost = get_token_count(messages) / 1000.0 * 0.03
-  format('%.2f', token_cost)
-end
-
-# Calculate output token cost
-def get_token_output_cost(messages)
-  token_cost = get_token_count(messages) / 1000.0 * 0.06
-  format('%.2f', token_cost)
-end
-
 def main
   prompt = TTY::Prompt.new
 
@@ -142,7 +124,7 @@ def main
     questions.clear
 
     if escape_counter == 0
-      puts "\nThinking of some questions to ask you, please wait. (#{get_token_count(messages)} tokens/$#{get_token_input_cost(messages)})"
+      puts "\nThinking of some questions to ask you, please wait."
     else
       puts "Getting some different questions"
     end
@@ -151,7 +133,7 @@ def main
       start_time = Time.now
       output = gpt_completion(messages, 'gpt-4o', client)
       duration = (Time.now - start_time).to_i
-      puts "Response: #{get_token_count(output)} tokens/$#{get_token_output_cost(output)} #{duration}s"
+      puts "Response: #{duration}s"
 
       output.split("\n").each do |line|
         line = line.gsub(/^[0-9]+[.) :]/, '').strip
