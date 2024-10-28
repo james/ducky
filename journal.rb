@@ -44,36 +44,7 @@ def main
   data_json_path = File.join(data_folder, 'data.json')
   data_json = File.exist?(data_json_path) ? JSON.parse(File.read(data_json_path)) : {}
 
-  # Get OpenAI API key if not present
-  if !data_json['openai'] || !data_json['openai']['apiKey']
-    puts "\nPlease enter your OpenAI API key, you must be able to use the 'gpt-4' model."
-    puts "\nYou can get your API key from https://beta.openai.com/account/api-keys"
-    api_key = prompt.mask("API Key:")
-    data_json['openai'] = { 'apiKey' => api_key }
-    File.write(data_json_path, JSON.pretty_generate(data_json))
-  end
-
   client = OpenAI::Client.new(access_token: data_json['openai']['apiKey'])
-
-  # Get user's name if not present
-  if !data_json['name']
-    data_json['name'] = prompt.ask("Please enter your name:")
-    File.write(data_json_path, JSON.pretty_generate(data_json))
-  end
-
-  # Set default meta prompt if not present
-  if !data_json['metaPrompt']
-    data_json['metaPrompt'] = "You are a chatbot named KITTY. Your job is to help #{data_json['name']} do daily journaling. You're going to be keeping track of the questions asked and the answers given. You are generally helpful and friendly."
-    File.write(data_json_path, JSON.pretty_generate(data_json))
-    puts "\nWe've added a default meta prompt for you, you can change this in the data.json file.\n\n"
-  end
-
-  # Load default questions if not present
-  if !data_json['morningQuestions']
-    default_questions = File.read(File.join(data_folder, 'defaultQuestions.txt'))
-    data_json['morningQuestions'] = default_questions.split("\n")
-    File.write(data_json_path, JSON.pretty_generate(data_json))
-  end
 
   # Build messages array for GPT
   messages = []
@@ -81,7 +52,7 @@ def main
   # Add meta prompt
   messages << {
     role: 'system',
-    content: data_json['metaPrompt']
+    content: "You are a chatbot named KITTY. Your job is to help James Darling do daily journaling. You're going to be keeping track of the questions asked and the answers given. You are generally helpful and friendly."
   }
 
   # Add current date/time context
@@ -160,6 +131,7 @@ def main
     content: 'Please create a set of three questions to ask in the MORNING by combining relevant questions from the initial list and formulating new ones. When appropriate, incorporate overarching themes from previous responses into the questions, but, very important, don\'t be overly direct with follow-up inquiries and don\'t always reference them, you can go back to the original list of questions for guidance, please mix it up, one question should always be new and unreliated to previous answers. Remember the information about weekends! Put more weight on recent questions and answers rather than older ones, questions and answers from a few days ago are less relevant than the past couple of days (unless the last couple of days we the weekend). Put more focus on the answers given than the questions you previously asked (they are just there for context). Remember you are asking these at the start of the day. There must be three questions, no more or less. Please return those three questions in .txt format with one question per line. Important: there must be NO numbers at the start of each question! Only return the questions no other text.'
   }
 
+  # Print messages
   puts messages.map { |m| m[:content] }.join("\n\n")
 
   # Get questions from GPT
