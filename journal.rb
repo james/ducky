@@ -6,9 +6,7 @@ require 'ruby/openai'
 
 prompt = TTY::Prompt.new
 
-# Create data directory if it doesn't exist
 data_folder = File.join(__dir__, 'data')
-Dir.mkdir(data_folder) unless Dir.exist?(data_folder)
 
 # Load or create data JSON
 data_json_path = File.join(data_folder, 'data.json')
@@ -27,15 +25,10 @@ messages << {
     "You are generally helpful and friendly."
 }
 
-# Add current date/time context
-current_date = Date.today
-current_time = Time.now
-day_name = current_date.strftime('%A')
-
 messages << {
   role: 'system',
-  content: "VERY IMPORTANT: Today is #{day_name} and the date is #{current_date.strftime('%d/%m/%Y')}, " \
-  "the time is #{current_time.strftime('%H:%M:%S')}. Important: Saturday and Sunday are the weekend for " \
+  content: "VERY IMPORTANT: Today is #{Time.now.strftime('%A')} and the date is #{Time.now.strftime('%d/%m/%Y')}, " \
+  "the time is #{Time.now.strftime('%H:%M:%S')}. Important: Saturday and Sunday are the weekend for " \
   "relaxing not working, if the day is Saturday or Sunday make your questions less work related and more " \
   "time-off chilling related. #{data_json['name']} counts the start of the week and work week as Monday, " \
   "anything 'new week' related starts on Monday. The end of 'work week' related ends on Friday. " \
@@ -55,11 +48,9 @@ messages << {
 }
 
 # Load previous questions and answers
-qa_file = File.join(data_folder, 'previousQuestionsAndAnswers.json')
-questions_and_answers = File.exist?(qa_file) ? JSON.parse(File.read(qa_file)) : {}
+questions_and_answers = JSON.parse(File.read(File.join(data_folder, 'previousQuestionsAndAnswers.json')))
 
 # Get last 5 dates with answers
-days = 5
 last_five_dates = []
 if questions_and_answers['dateMap']
   past_dates = questions_and_answers['dateMap'].reverse
@@ -68,7 +59,7 @@ if questions_and_answers['dateMap']
         questions_and_answers['answers'][date] &&
         !questions_and_answers['answers'][date].empty?
       last_five_dates << date
-      break if last_five_dates.length == days
+      break if last_five_dates.length == 5
     end
   end
 end
