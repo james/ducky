@@ -48,7 +48,8 @@ messages << {
 }
 
 # Load previous questions and answers
-questions_and_answers = JSON.parse(File.read(File.join(data_folder, 'previousQuestionsAndAnswers.json')))
+qa_file = File.join(data_folder, 'previousQuestionsAndAnswers.json')
+questions_and_answers = File.exist?(qa_file) ? JSON.parse(File.read(qa_file)) : {}
 
 # Get last 5 dates with answers
 last_five_dates = []
