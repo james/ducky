@@ -96,6 +96,12 @@ last_five_dates.each do |date|
   }
 end
 
+todolist = `reminders show "To do"`
+  messages << {
+    role: 'system',
+    content: "James has a todo list, and on his todo list currently is the following:\n" + todolist
+  }
+
 # Request new questions from GPT
 messages << {
   role: 'user',
