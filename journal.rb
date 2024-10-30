@@ -1,10 +1,7 @@
 require 'json'
 require 'date'
 require 'io/console'
-require 'tty-prompt'
 require 'ruby/openai'
-
-prompt = TTY::Prompt.new
 
 data_folder = File.join(__dir__, 'data')
 
