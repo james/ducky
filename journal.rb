@@ -35,12 +35,6 @@ messages << {
 
 messages << {
   role: 'system',
-  content: 'Important: Your name is Ducky, you are not a duck, you are an AI PA, do NOT pretend to be a duck, " \
-    "act like a human, you are just called Ducky.'
-}
-
-messages << {
-  role: 'system',
   content: "Here is a list of default questions to get you started\n#{data_json['morningQuestions'].join("\n")}"
 }
 
