@@ -35,7 +35,7 @@ messages << {
 
 messages << {
   role: 'system',
-  content: "Here is a list of default questions to get you started\n#{data_json['morningQuestions'].join("\n")}"
+  content: "Here is a list of default questions to get you started:\n#{data_json['morningQuestions'].join("\n")}"
 }
 
 # Load previous questions and answers
@@ -66,13 +66,13 @@ last_five_dates.each do |date|
 
   qa_text = case days_ago
     when 0
-      "Today, #{day_of_week} (#{date}), #{data_json['name']} Q&As were:\n"
+      "Today, #{day_of_week} (#{date}), #{data_json['name']}'s Q&As were:\n"
     when 1
-      "Yesterday, #{day_of_week} (#{date}), #{data_json['name']} Q&As were:\n"
+      "Yesterday, #{day_of_week} (#{date}), #{data_json['name']}'s Q&As were:\n"
     when 2
-      "#{day_of_week} just gone (#{date}), #{data_json['name']} Q&As were:\n"
+      "#{day_of_week} just gone (#{date}), #{data_json['name']}'s Q&As were:\n"
     else
-      "Last #{day_of_week} (#{date}), #{data_json['name']} Q&As were:\n"
+      "Last #{day_of_week} (#{date}), #{data_json['name']}'s Q&As were:\n"
   end
 
   questions_and_answers['answers'][date].each_with_index do |qa, i|
