@@ -30,38 +30,10 @@ if questions_and_answers['dateMap']
   end
 end
 
-# Format previous Q&As
-today = Date.today.iso8601
-qa_text = ""
-
-last_five_dates.each do |date|
-  next unless questions_and_answers['answers'] && questions_and_answers['answers'][date]
-
-  days_ago = (Date.parse(today) - Date.parse(date)).to_i
-  day_of_week = Date.parse(date).strftime('%A')
-
-  qa_text << case days_ago
-    when 0
-      "Today, #{day_of_week} (#{date}), #{data_json['name']}'s Q&As were:\n"
-    when 1
-      "Yesterday, #{day_of_week} (#{date}), #{data_json['name']}'s Q&As were:\n"
-    when 2
-      "#{day_of_week} just gone (#{date}), #{data_json['name']}'s Q&As were:\n"
-    else
-      "Last #{day_of_week} (#{date}), #{data_json['name']}'s Q&As were:\n"
-  end
-
-  questions_and_answers['answers'][date].each_with_index do |qa, i|
-    qa_text += "Q#{i + 1}: #{qa['question']}\n"
-    qa_text += "A#{i + 1}: #{qa['answer']}\n"
-  end
-  qa_text += "\n"
-end
-
 todolist = `reminders show "To do"`
 
 template = File.read('prompt.erb')
-prompt = ERB.new(template).result_with_hash(questions_and_answers: qa_text, todolist: todolist)
+prompt = ERB.new(template).result_with_hash(last_five_dates: last_five_dates, questions_and_answers: questions_and_answers, todolist: todolist)
 messages = [{ role: 'user', content: prompt }]
 
 # Print messages
